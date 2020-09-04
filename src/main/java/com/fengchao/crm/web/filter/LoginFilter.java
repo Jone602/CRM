@@ -11,20 +11,22 @@ import java.io.IOException;
 public class LoginFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse reps, FilterChain chain) throws IOException, ServletException {
         System.out.println("进入到验证有没有登陆过的过滤器");
-        //因为SerletRequest中没有HttpServlet方法，所以需要强转为HttpServlet
+        //因为ServletRequest中没有HttpServlet的getSession()方法，所以需要强转为HttpServlet
         HttpServletRequest request  = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) reps;
         String path = request.getServletPath();
         //不应该被拦截的资源，放行
         if("/login.jsp".equals(path)||"/settings/user/login.do".equals(path)){
+            System.out.println("不应该被拦截的资源，放行");
                 chain.doFilter(req,reps);
         }else{
             //其他资源 进入过滤器，验证是否登陆过
-            System.out.println("是否是其他资源");
+            System.out.println("其他资源 进入过滤器，验证是否登陆过");
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("user");
             //User user = (User) request.getAttribute("user");
             if(user!=null){
+                System.out.println("登陆过，放行！！！！");
                 chain.doFilter(req,reps);
             }else{
                 //如果user为空，则表示之前没有登陆过，则需要重定向到登陆页面

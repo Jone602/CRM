@@ -6,6 +6,7 @@ import com.fengchao.crm.settings.service.UserService;
 import com.fengchao.crm.utils.DateTimeUtil;
 import com.fengchao.crm.utils.SqlSessionUtil;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,7 +42,12 @@ public class UserServiceImpl implements UserService {
         }
         return user;
     }
+
+    public List<User> getUserList() {
+        List<User> ulist = userDao.getUserList();
+        return ulist;
     }
+}
 
 
 

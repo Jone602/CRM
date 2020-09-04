@@ -8,6 +8,7 @@
   
   <typeAliases>
   	<package name="com.fengchao.crm.settings.domain"/>
+    <package name="com.fengchao.crm.workbench.domain"/>
   </typeAliases>
   
   <environments default="development">
@@ -26,6 +27,7 @@
   <mappers>
    
       <package name="com.fengchao.crm.settings.dao"/>
+      <package name="com.fengchao.crm.workbench.dao"/>
     
   </mappers>
 </configuration>

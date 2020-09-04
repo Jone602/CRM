@@ -14,7 +14,7 @@
     get:执行查询操作   find/select/query/...
     特殊操作 login等
   -->
-  <!-- 用户控制器 -->
+
   <filter>
     <filter-name>EncodingFilter</filter-name>
     <filter-class>com.fengchao.crm.web.filter.EncodingFilter</filter-class>
@@ -32,6 +32,7 @@
     <url-pattern>*.do</url-pattern>
     <url-pattern>*.jsp</url-pattern>
   </filter-mapping>
+  <!-- 用户控制器 -->
   <servlet>
     <servlet-name>UserController</servlet-name>
     <servlet-class>com.fengchao.crm.settings.web.controller.UserController</servlet-class>
@@ -39,6 +40,16 @@
   <servlet-mapping>
     <servlet-name>UserController</servlet-name>
     <url-pattern>/settings/user/login.do</url-pattern>
+  </servlet-mapping>
+  <!-- 市场活动的控制器 -->
+  <servlet>
+    <servlet-name>ActivityController</servlet-name>
+    <servlet-class>com.fengchao.crm.workbench.web.controller.ActivityController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ActivityController</servlet-name>
+    <url-pattern>/workbench/activity/getUserList.do</url-pattern>
+    <url-pattern>/workbench/activity/save.do</url-pattern>
   </servlet-mapping>
 
 
