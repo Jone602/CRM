@@ -1,4 +1,7 @@
 package com.fengchao.crm.workbench.dao;
 
-public class ActivityRemarkDao {
+public interface ActivityRemarkDao {
+    int getCountByAids(String[] ids);
+
+    int delectByAids(String[] ids);
 }

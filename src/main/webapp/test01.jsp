@@ -9,6 +9,19 @@
 <html>
 <head>
     <title>Title</title>
+    <script>
+        $.ajax({
+            url:"workbench/activity/delete.do",
+            data:{
+
+            },
+            type:"get",
+            dataType:"json",
+            success:function (data) {
+
+            }
+        })
+    </script>
 </head>
 <body>
 
