@@ -8,6 +8,7 @@ import com.fengchao.crm.utils.ServiceFactory;
 import com.fengchao.crm.utils.UUIDUtil;
 import com.fengchao.crm.vo.PagintionVO;
 import com.fengchao.crm.workbench.domain.Activity;
+import com.fengchao.crm.workbench.domain.ActivityRemark;
 import com.fengchao.crm.workbench.service.ActivitySerivice;
 import com.fengchao.crm.workbench.service.impl.ActivitySeriviceImpl;
 
@@ -43,20 +44,41 @@ public class ActivityController extends HttpServlet {
         }else if("/workbench/activity/update.do".equals(path)){
             System.out.println("执行update()方法");
             update(request,response);
-        }else if("/workbench/activity/detal.do".equals(path)){
-            System.out.println("执行detal()方法");
-            detal(request,response);
+        }else if("/workbench/activity/detail.do".equals(path)){
+            System.out.println("执行detail()方法");
+            detail(request,response);
+        }else if("/workbench/activity/getRemarkListByAid.do".equals(path)){
+            System.out.println("执行getRemarkListByAid()方法");
+            getRemarkListByAid(request,response);
+        }else if("/workbench/activity/deleteRemark.do".equals(path)){
+            System.out.println("执行deleteRemark()方法");
+            deleteRemark(request,response);
         }
 
     }
 
-    private void detal(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void deleteRemark(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        ActivitySerivice as = (ActivitySerivice) ServiceFactory.getService(new ActivitySeriviceImpl());
+        boolean flag = as.deleteRemark(id);
+        PrintJson.printJsonFlag(response,flag);
+    }
+
+    private void getRemarkListByAid(HttpServletRequest request, HttpServletResponse response) {
+        ActivitySerivice as = (ActivitySerivice) ServiceFactory.getService(new ActivitySeriviceImpl());
+        String activityId = request.getParameter("activityId");
+        List<ActivityRemark> rList = as.getRemarkListByAid(activityId);
+        PrintJson.printJsonObj(response,rList);
+    }
+
+    private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("进入到详细信息页中");
         String id = request.getParameter("id");
         ActivitySerivice as = (ActivitySerivice) ServiceFactory.getService(new ActivitySeriviceImpl());
-        Activity a = as.detal(id);
+        Activity a = as.detail(id);
         request.setAttribute("a",a);
-        request.getRequestDispatcher("/workbeach/activity/detal.jsp").forward(request,response);
+        request.getRequestDispatcher("/workbench/activity/detail.jsp").forward(request,response);
+        System.out.println("执行完毕");
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) {

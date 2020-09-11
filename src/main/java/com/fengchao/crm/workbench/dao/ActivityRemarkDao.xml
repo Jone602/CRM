@@ -4,6 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fengchao.crm.workbench.dao.ActivityRemarkDao">
+    <delete id="deleteRemark">
+        delete from tbl_activity_remark
+        where id=#{id}
+    </delete>
+    <select id="getRemarkListByAid" resultType="ActivityRemark">
+        select * from tbl_activity_remark where activityId=#{activityId}
+    </select>
     <delete id="delectByAids">
         delete
         from tbl_activity_remark

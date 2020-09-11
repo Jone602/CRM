@@ -7,6 +7,7 @@ import com.fengchao.crm.vo.PagintionVO;
 import com.fengchao.crm.workbench.dao.ActivityDao;
 import com.fengchao.crm.workbench.dao.ActivityRemarkDao;
 import com.fengchao.crm.workbench.domain.Activity;
+import com.fengchao.crm.workbench.domain.ActivityRemark;
 import com.fengchao.crm.workbench.service.ActivitySerivice;
 
 import java.util.HashMap;
@@ -79,8 +80,22 @@ public class ActivitySeriviceImpl implements ActivitySerivice {
         return flag;
     }
 
-    public Activity detal(String id) {
-        Activity a = activityDao.detal(id);
+    public Activity detail(String id) {
+        Activity a = activityDao.detail(id);
         return a;
+    }
+
+    public List<ActivityRemark> getRemarkListByAid(String activityId) {
+        List<ActivityRemark> sList = activityRemarkDao.getRemarkListByAid(activityId);
+        return sList;
+    }
+
+    public boolean deleteRemark(String id) {
+        boolean flag = true;
+        int count = activityRemarkDao.deleteRemark(id);
+        if (count!=1){
+            flag = false;
+        }
+        return flag;
     }
 }

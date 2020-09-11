@@ -2,8 +2,10 @@ package com.fengchao.crm.workbench.service;
 
 import com.fengchao.crm.vo.PagintionVO;
 import com.fengchao.crm.workbench.domain.Activity;
+import com.fengchao.crm.workbench.domain.ActivityRemark;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public interface ActivitySerivice {
@@ -18,5 +20,9 @@ public interface ActivitySerivice {
 
     boolean update(Activity a);
 
-    Activity detal(String id);
+    Activity detail(String id);
+
+    List<ActivityRemark> getRemarkListByAid(String activityId);
+
+    boolean deleteRemark(String id);
 }
