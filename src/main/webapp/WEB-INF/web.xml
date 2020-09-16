@@ -32,6 +32,10 @@
     <url-pattern>*.do</url-pattern>
     <url-pattern>*.jsp</url-pattern>
   </filter-mapping>
+  <listener>
+    <listener-class>com.fengchao.crm.web.listener.SysInitListener</listener-class>
+  </listener>
+
   <!-- 用户控制器 -->
   <servlet>
     <servlet-name>UserController</servlet-name>
@@ -57,9 +61,17 @@
     <url-pattern>/workbench/activity/detail.do</url-pattern>
     <url-pattern>/workbench/activity/getRemarkListByAid.do</url-pattern>
       <url-pattern>/workbench/activity/deleteRemark.do</url-pattern>
-
+    <url-pattern>/workbench/activity/saveRemark.do</url-pattern>
   </servlet-mapping>
-
+  <!--线索的控制器-->
+  <servlet>
+    <servlet-name>ClueController</servlet-name>
+    <servlet-class>com.fengchao.crm.workbench.web.controller.ClueController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ClueController</servlet-name>
+    <url-pattern>/workbench/clue/getUserList.do</url-pattern>
+  </servlet-mapping>
 
 
 

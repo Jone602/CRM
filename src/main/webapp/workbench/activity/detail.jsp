@@ -60,6 +60,26 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         $("#remarkBody").on("mouseout",".remarkDiv",function(){
             $(this).children("div").children("div").hide();
         });
+        //添加备注操作
+        $("#saveRemarkBtn").click(function () {
+
+            $.ajax({
+                url:"workbench/activity/saveRemark.do",
+                data:{
+                    "noteContent":$("#remark").val(),
+                    "activityId":a.id
+                },
+                type:"post",
+                dataType:"json",
+                success:function (data) {
+                    if(data.success){
+
+                    }else {
+                        alert("添加失败！！")
+                    }
+                }
+            })
+        })
 	});
     //加载备注操作
     function showRemarkList() {
@@ -78,7 +98,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                  */
                 var html = "";
                 $.each(data,function (i,n) {
-                    html+='<div class="remarkDiv" style="height: 60px;">';
+                    html+='<div id="'+n.id+'" class="remarkDiv" style="height: 60px;">';
                     html+='<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">';
                     html+='<div style="position: relative; top: -40px; left: 40px;" >';
                     html+='<h5>'+n.noteContent+'</h5>';
@@ -90,26 +110,32 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                     html+='</div>';
                     html+='</div>';
                     html+='</div>';
-                })
+                });
                 $("#remarkDiv").before(html);
             }
         })
     }
+    //删除备注
     function deleteRemark(id) {
-        alert(id)
+        alert(id);
         $.ajax({
             url:"workbench/activity/deleteRemark.do",
             data:{
                 "id":id
             },
-            type:"get",
+            type:"post",
             dataType:"json",
             success:function (data) {
-                if (!data.success){
-                    alert("删除失败")
+                if (data.success){
+                    alert("删除成功！！")
+                    //这样写是不行的，必须找到这个元素才行。
+                    //showRemarkList();
+                    $("#"+id).remve();
+
+                }else {
+                    alert("删除失败");
                 }
-                alert("删除成功！！")
-                showRemarkList();
+
             }
         })
     }
@@ -250,7 +276,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 				<textarea id="remark" class="form-control" style="width: 850px; resize : none;" rows="2"  placeholder="添加备注..."></textarea>
 				<p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
 					<button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-					<button type="button" class="btn btn-primary">保存</button>
+					<button type="button" class="btn btn-primary" id="saveRemarkBtn">保存</button>
 				</p>
 			</form>
 		</div>
