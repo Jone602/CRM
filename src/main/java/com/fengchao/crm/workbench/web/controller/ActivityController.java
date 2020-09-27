@@ -161,7 +161,7 @@ public class ActivityController extends HttpServlet {
                 String cost = request.getParameter("cost");
                 String description = request.getParameter("description");
                 String createTime = DateTimeUtil.getSysTime();
-                //修改人
+                //创建人
                 String createBy = ((User)request.getSession().getAttribute("user")).getName();
 
                 Activity a = new Activity();

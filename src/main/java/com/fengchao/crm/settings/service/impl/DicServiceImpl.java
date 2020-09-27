@@ -28,7 +28,7 @@ public class DicServiceImpl implements DicService {
             String code = dt.getCode();
             //根据code取查询dicValue表
             List<DicValue> dvList = dicValueDao.getListByCode(code);
-            map.put(code,dvList);
+            map.put(code+"List",dvList);
         }
         return map;
     }

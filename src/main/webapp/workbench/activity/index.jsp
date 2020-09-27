@@ -14,7 +14,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
-<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="jquery/bs_pagination/jquery.bs_pagination.min.css">
 		<script type="text/javascript" src="jquery/bs_pagination/jquery.bs_pagination.min.js"></script>
@@ -110,7 +110,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             $("#hidden-startDate").val($.trim($("#search-startDate").val()));
             $("#hidden-endDate").val($.trim($("#search-endDate").val()));
             pageList(1,$("#activityPage").bs_pagination('getOption','rowsPerPage'));
-        })
+        });
         //选中全选实现全选效果
         $("#qx").click(function () {
             //alert(123)
@@ -126,7 +126,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		 */
 		$("#activityBody").on("click",$("input[name=xz]"),function () {
 			$("#qx").prop("checked",$("input[name=xz]").length==$("input[name=xz]:checked").length);
-        })
+        });
 		//删除活动数据操作
 		$("#deleteBtn").click(function () {
 		    //拿到的选中的数据

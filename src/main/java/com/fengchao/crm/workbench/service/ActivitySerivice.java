@@ -25,4 +25,8 @@ public interface ActivitySerivice {
     List<ActivityRemark> getRemarkListByAid(String activityId);
 
     boolean deleteRemark(String id);
+
+    List<Activity> getActivityListByClueId(String clueId);
+
+    List<Activity> getActivityListByNameAndNotByClueId(Map<String,String> map);
 }

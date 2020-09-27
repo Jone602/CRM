@@ -11,7 +11,7 @@
     <title>Title</title>
     <script>
         $.ajax({
-            url:"workbench/activity/delete.do",
+            url:"",
             data:{
 
             },
@@ -21,6 +21,14 @@
 
             }
         })
+        $(".time").datetimepicker({
+            minView: "month",
+            language:  'zh-CN',
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayBtn: true,
+            pickerPosition: "top-left"
+        });
     </script>
 </head>
 <body>
