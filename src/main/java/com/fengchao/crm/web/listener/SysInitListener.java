@@ -27,6 +27,8 @@ public class SysInitListener implements ServletContextListener {
                 applivation.setAttribute(key,map.get(key));
             }
         System.out.println("服务器处理数字字典结束");
+            //数据字典处理完毕后，需要处理以下文件
+
     }
 
 

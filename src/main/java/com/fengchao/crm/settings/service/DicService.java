@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Author 北京动力节点
+ * Author
  */
 public interface DicService {
 

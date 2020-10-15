@@ -88,29 +88,29 @@
         #{id}
     </foreach>
     </delete>
-    <insert id="save">
-        insert into tbl_activity(
-        id,
-        owner,
-        name,
-        startDate,
-        endDate,
-        cost,
-        description,
-        createTime,
-        createBy
-        )values (
-        #{id},
-        #{owner},
-        #{name},
-        #{startDate},
-        #{endDate},
-        #{cost},
-        #{description},
-        #{createTime},
-        #{createBy}
-        )
-    </insert>
+    <!--<insert id="save">-->
+        <!--insert into tbl_activity(-->
+        <!--id,-->
+        <!--owner,-->
+        <!--name,-->
+        <!--startDate,-->
+        <!--endDate,-->
+        <!--cost,-->
+        <!--description,-->
+        <!--createTime,-->
+        <!--createBy-->
+        <!--)values (-->
+        <!--#{id},-->
+        <!--#{owner},-->
+        <!--#{name},-->
+        <!--#{startDate},-->
+        <!--#{endDate},-->
+        <!--#{cost},-->
+        <!--#{description},-->
+        <!--#{createTime},-->
+        <!--#{createBy}-->
+        <!--)-->
+    <!--</insert>-->
     <select id="getTotalByCoundition" resultType="int">
 
         select count(*)

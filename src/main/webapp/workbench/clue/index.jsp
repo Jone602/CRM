@@ -57,7 +57,8 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		$("#qx").click(function () {
 		    //alert(123)
 			$("input[name=xz]").prop("checked",this.checked);
-        })
+        });
+
         pageList(1,5);
 		//创建模态窗口的保存按钮事件
 		$("#saveBtn").click(function () {

@@ -1,27 +1,150 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
+	<%--//绝对路径--%>
+	<base href="<%=basePath%>">
 <meta charset="UTF-8">
 
-<link href="../../jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
-<link href="../../jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
+<link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" />
 
-<script type="text/javascript" src="../../jquery/jquery-1.11.1-min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
-<script type="text/javascript" src="../../jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
-
+<script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
+<script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+		<link rel="stylesheet" type="text/css" href="jquery/bs_pagination/jquery.bs_pagination.min.css">
+		<script type="text/javascript" src="jquery/bs_pagination/jquery.bs_pagination.min.js"></script>
+		<script type="text/javascript" src="jquery/bs_pagination/en.js"></script>
 <script type="text/javascript">
 
 	$(function(){
+        // $(".time").datetimepicker({
+        //     minView: "month",
+        //     language:  'zh-CN',
+        //     format: 'yyyy-mm-dd',
+        //     autoclose: true,
+        //     todayBtn: true,
+        //     pickerPosition: "top-left"
+        // });
 		
 		//定制字段
 		$("#definedColumns > li").click(function(e) {
 			//防止下拉菜单消失
 	        e.stopPropagation();
 	    });
-		
+        pageList(1,5);
+        $("#searchBtn").click(function () {
+            //alert(123)
+            pageList(1,5);
+        });
+        $("#addBtn").click(function () {
+			//alert(132)
+
+            $.ajax({
+                url:"workbench/customer/getUserList.do",
+                type:"get",
+                dataType:"json",
+                success:function (data) {
+					var html = "<option></option>";
+					$.each(data,function (i,n) {
+                    html+='<option value="'+n.id+'">'+n.name+'</option>';
+                    });
+					$("#create-owner").html(html);
+
+					//使用EL表达式，取出当前用户的id
+					var id = "${user.id}"
+					$("#create-owner").val(id);
+                    $("#createCustomerModal").modal("show");
+                }
+            })
+        });
+        $("#saveBtn").click(function () {
+            $.ajax({
+                url:"workbench/customer/save.do",
+                data:{
+                    "name":$.trim($("#create-name").val()),
+                    "owner":$.trim($("#create-owner").val()),
+                    "phone":$.trim($("#create-phone").val()),
+                    "website":$.trim($("#create-website").val()),
+                    "description":$.trim($("#create-description").val()),
+                    "contactSummary":$.trim($("#create-contactSummary").val()),
+                    "nextContactTime":$.trim($("#create-nextContactTime").val()),
+                    "address1":$.trim($("#create-address1").val()),
+                    "nextContactTime":$.trim($("#create-nextContactTime").val())
+                },
+                type:"get",
+                dataType:"json",
+                success:function (data) {
+                    if (data.success){
+                        alert("添加成功！！");
+                        pageList(1,5);
+                    } else{
+                        alert("添加失败！！")
+                    }
+                }
+
+            });
+            $("#createCustomerModal").modal("hide");
+        })
 	});
+	function pageList(pageNo,pageSize) {
+		//alert(123)
+        $.ajax({
+            url:"workbench/customer/getCustomerList.do",
+            data:{
+				"pageNo":pageNo,
+				"pageSize":pageSize,
+				"name":$.trim($("#search-name").val()),
+				"owner":$.trim($("#search-owner").val()),
+				"phone":$.trim($("#search-phone").val()),
+				"website":$.trim($("#search-website").val())
+            },
+            type:"get",
+            dataType:"json",
+            success:function (data) {
+			var html = "";
+                /**
+				 * 分析data字符串
+				 * {"total":2,"dataList":[{客户1},{客户2},{.....}]}
+                 */
+			$.each(data.dataList,function (i,n) {
+            html+='<tr>';
+            html+='<td><input type="checkbox" value="'+n.id+'" id="xz"/></td>';
+            html+='<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'detail.jsp\';">'+n.name+'</a></td>';
+            html+='<td>'+n.owner+'</td>';
+            html+='<td>'+n.phone+'</td>';
+            html+='<td>'+n.website+'</td>';
+            html+='</tr>';
+            });
+				$("#custormerBody").html(html);
+                var totalPages = data.total%pageSize==0?data.total/pageSize:parseInt(data.total/pageSize)+1;
+
+                $("#customerPage").bs_pagination({
+                    currentPage: pageNo, // 页码
+                    rowsPerPage: pageSize, // 每页显示的记录条数
+                    maxRowsPerPage: 20, // 每页最多显示的记录条数
+                    totalPages: totalPages, // 总页数
+                    totalRows: data.total, // 总记录条数
+
+                    visiblePageLinks: 3, // 显示几个卡片
+
+                    showGoToPage: true,
+                    showRowsPerPage: true,
+                    showRowsInfo: true,
+                    showRowsDefaultInfo: true,
+
+                    //该回调函数时在，点击分页组件的时候触发的
+                    onChangePage : function(event, data){
+                        pageList(data.currentPage , data.rowsPerPage);
+                    }
+                });
+            }
+        })
+    }
 	
 </script>
 </head>
@@ -43,15 +166,15 @@
 						<div class="form-group">
 							<label for="create-customerOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-customerOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+								<select class="form-control" id="create-owner">
+
+								  <%--<option>lisi</option>--%>
+								  <%--<option>wangwu</option>--%>
 								</select>
 							</div>
 							<label for="create-customerName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-customerName">
+								<input type="text" class="form-control" id="create-name">
 							</div>
 						</div>
 						
@@ -68,7 +191,7 @@
 						<div class="form-group">
 							<label for="create-describe" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
 						</div>
 						<div style="height: 1px; width: 103%; background-color: #D5D5D5; left: -13px; position: relative;"></div>
@@ -81,7 +204,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="create-nextContactTime" class="col-sm-2 control-label">下次联系时间</label>
+                                <label for="create-nextContactTime" class="col-sm-2 control-label time">下次联系时间</label>
                                 <div class="col-sm-10" style="width: 300px;">
                                     <input type="text" class="form-control" id="create-nextContactTime">
                                 </div>
@@ -103,7 +226,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" id="saveBtn">保存</button>
 				</div>
 			</div>
 		</div>
@@ -214,40 +337,40 @@
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">名称</div>
-				      <input class="form-control" type="text">
+				      <input class="form-control" type="text" id="search-name">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">所有者</div>
-				      <input class="form-control" type="text">
+				      <input class="form-control" type="text" id="search-owner">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">公司座机</div>
-				      <input class="form-control" type="text">
+				      <input class="form-control" type="text" id="search-phone">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">公司网站</div>
-				      <input class="form-control" type="text">
+				      <input class="form-control" type="text" id="search-website">
 				    </div>
 				  </div>
 				  
-				  <button type="submit" class="btn btn-default">查询</button>
+				  <button type="submit" class="btn btn-default" id="searchBtn">查询</button>
 				  
 				</form>
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
-				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editCustomerModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button type="button" class="btn btn-primary" id="addBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+				  <button type="button" class="btn btn-default" id="updateBtn"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
+				  <button type="button" class="btn btn-danger" id="deleteBtn"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
 			</div>
@@ -262,58 +385,59 @@
 							<td>公司网站</td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">动力节点</a></td>
-							<td>zhangsan</td>
-							<td>010-84846003</td>
-							<td>http://www.bjpowernode.com</td>
-						</tr>
-                        <tr class="active">
-                            <td><input type="checkbox" /></td>
-                            <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">动力节点</a></td>
-                            <td>zhangsan</td>
-                            <td>010-84846003</td>
-                            <td>http://www.bjpowernode.com</td>
-                        </tr>
+					<tbody id="custormerBody" >
+						<%--<tr>--%>
+							<%--<td><input type="checkbox" /></td>--%>
+							<%--<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">动力节点</a></td>--%>
+							<%--<td>zhangsan</td>--%>
+							<%--<td>010-84846003</td>--%>
+							<%--<td>http://www.bjpowernode.com</td>--%>
+						<%--</tr>--%>
+                        <%--<tr class="active">--%>
+                            <%--<td><input type="checkbox" /></td>--%>
+                            <%--<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">动力节点</a></td>--%>
+                            <%--<td>zhangsan</td>--%>
+                            <%--<td>010-84846003</td>--%>
+                            <%--<td>http://www.bjpowernode.com</td>--%>
+                        <%--</tr>--%>
 					</tbody>
 				</table>
 			</div>
 			
-			<div style="height: 50px; position: relative;top: 30px;">
-				<div>
-					<button type="button" class="btn btn-default" style="cursor: default;">共<b>50</b>条记录</button>
-				</div>
-				<div class="btn-group" style="position: relative;top: -34px; left: 110px;">
-					<button type="button" class="btn btn-default" style="cursor: default;">显示</button>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-							10
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">20</a></li>
-							<li><a href="#">30</a></li>
-						</ul>
-					</div>
-					<button type="button" class="btn btn-default" style="cursor: default;">条/页</button>
-				</div>
-				<div style="position: relative;top: -88px; left: 285px;">
-					<nav>
-						<ul class="pagination">
-							<li class="disabled"><a href="#">首页</a></li>
-							<li class="disabled"><a href="#">上一页</a></li>
-							<li class="active"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">下一页</a></li>
-							<li class="disabled"><a href="#">末页</a></li>
-						</ul>
-					</nav>
-				</div>
+			<div style="height: 50px; position: relative;top: 30px;" >
+				<div id="customerPage"></div>
+				<%--<div>--%>
+					<%--<button type="button" class="btn btn-default" style="cursor: default;">共<b>50</b>条记录</button>--%>
+				<%--</div>--%>
+				<%--<div class="btn-group" style="position: relative;top: -34px; left: 110px;">--%>
+					<%--<button type="button" class="btn btn-default" style="cursor: default;">显示</button>--%>
+					<%--<div class="btn-group">--%>
+						<%--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">--%>
+							<%--10--%>
+							<%--<span class="caret"></span>--%>
+						<%--</button>--%>
+						<%--<ul class="dropdown-menu" role="menu">--%>
+							<%--<li><a href="#">20</a></li>--%>
+							<%--<li><a href="#">30</a></li>--%>
+						<%--</ul>--%>
+					<%--</div>--%>
+					<%--<button type="button" class="btn btn-default" style="cursor: default;">条/页</button>--%>
+				<%--</div>--%>
+				<%--<div style="position: relative;top: -88px; left: 285px;">--%>
+					<%--<nav>--%>
+						<%--<ul class="pagination">--%>
+							<%--<li class="disabled"><a href="#">首页</a></li>--%>
+							<%--<li class="disabled"><a href="#">上一页</a></li>--%>
+							<%--<li class="active"><a href="#">1</a></li>--%>
+							<%--<li><a href="#">2</a></li>--%>
+							<%--<li><a href="#">3</a></li>--%>
+							<%--<li><a href="#">4</a></li>--%>
+							<%--<li><a href="#">5</a></li>--%>
+							<%--<li><a href="#">下一页</a></li>--%>
+							<%--<li class="disabled"><a href="#">末页</a></li>--%>
+						<%--</ul>--%>
+					<%--</nav>--%>
+				<%--</div>--%>
 			</div>
 			
 		</div>

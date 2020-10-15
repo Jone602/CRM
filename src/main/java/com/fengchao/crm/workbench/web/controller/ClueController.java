@@ -54,6 +54,7 @@ public class ClueController extends HttpServlet {
 
             getActivityListByName(request,response);
         }else if ("/workbench/clue/convert.do".equals(path)){
+            System.out.println("=============convert.do===================");
             convert(request,response);
         }
 

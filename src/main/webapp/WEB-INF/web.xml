@@ -83,8 +83,32 @@
     <url-pattern>/workbench/clue/getActivityListByName.do</url-pattern>
       <url-pattern>/workbench/clue/convert.do</url-pattern>
   </servlet-mapping>
+  <!--客户的控制器-->
+  <servlet>
+    <servlet-name>CustomerController</servlet-name>
+    <servlet-class>com.fengchao.crm.workbench.web.controller.CustomerController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CustomerController</servlet-name>
+    <url-pattern>/workbench/customer/getCustomerList.do</url-pattern>
+    <url-pattern>/workbench/customer/getUserList.do</url-pattern>
+    <url-pattern>/workbench/customer/save.do</url-pattern>
+  </servlet-mapping>
+  <!--交易控制器-->
+  <servlet>
+    <servlet-name>TranController</servlet-name>
+    <servlet-class>com.fengchao.crm.workbench.web.controller.TranController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TranController</servlet-name>
+    <url-pattern>/workbench/transaction/add.do</url-pattern>
+    <url-pattern>/workbench/transaction/getTranList.do</url-pattern>
+    <url-pattern>/workbench/transaction/getActivityListByName.do</url-pattern>
+    <url-pattern>/workbench/transaction/getContactsListByName.do</url-pattern>
+    <url-pattern>/workbench/transaction/getCustomerName.do</url-pattern>
+  </servlet-mapping>
 
-
+  <!---->
 
 
 </web-app>

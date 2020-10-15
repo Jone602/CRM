@@ -4,9 +4,83 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.fengchao.crm.workbench.dao.TranDao">
+    <select id="getTranList" resultType="Tran">
+        select
+        t.name,
+        cus.name as customer,
+        t.stage,
+        t.type,
+        u.name as owner,
+        t.source,
+        con.fullname
+        from tbl_tran t
+        join tbl_user u
+        on t.owner=u.id
+        join tbl_customer cus
+        on t.customerId=cus.id
+        join tbl_contacts con
+        on t.contactsId=con.id
+        <!--<where>-->
+            <!--<if test="owner!=null">-->
+                <!--u.name like '%' #{owner} '%'-->
+            <!--</if>-->
+            <!--<if test="name!=null">-->
+                <!--and t.name like '%' #{name} '%'-->
+            <!--</if>-->
+            <!--<if test="customer!=null">-->
+                <!--and cus.name like '%' #{customer} '%'-->
+            <!--</if>-->
+            <!--<if test="stage!=null">-->
+                <!--and t.stage=#{stage}-->
+            <!--</if>-->
+            <!--<if test="type!=null">-->
+                <!--and t.type=${type}-->
+            <!--</if>-->
+            <!--<if test="source!=null">-->
+                <!--and t.source=#{source}-->
+            <!--</if>-->
+            <!--<if test="contacts!=null">-->
+                <!--and con.fullname like '%' #{contacts} '%'-->
+            <!--</if>-->
+        <!--</where>-->
+        <!--limit #{skipCount},#{pageSize}-->
+        <!--order by t.createTime-->
+    </select>
+    <select id="getTotal" resultType="int">
+        select count(*)
+        from tbl_tran t
+        join tbl_user u
+        on t.owner=u.id
+        join tbl_customer cus
+        on t.customerId=cus.id
+        join tbl_contacts con
+        on t.contactsId=con.id
+        <!--<where>-->
+            <!--<if test="owner!=null">-->
+                <!--u.name like '%' #{owner} '%'-->
+            <!--</if>-->
+            <!--<if test="name!=null">-->
+                <!--and t.name like '%' #{name} '%'-->
+            <!--</if>-->
+            <!--<if test="customer!=null">-->
+                <!--and cus.name like '%' #{customer} '%'-->
+            <!--</if>-->
+            <!--<if test="stage!=null">-->
+                <!--and t.stage=#{stage}-->
+            <!--</if>-->
+            <!--<if test="type!=null">-->
+                <!--and t.type=${type}-->
+            <!--</if>-->
+            <!--<if test="source!=null">-->
+                <!--and t.source=#{source}-->
+            <!--</if>-->
+            <!--<if test="contacts!=null">-->
+                <!--and con.fullname like '%' #{contacts} '%'-->
+            <!--</if>-->
+        <!--</where>-->
+    </select>
 <insert id="save">
         insert into tbl_tran(
-
             id,
             owner,
             money,

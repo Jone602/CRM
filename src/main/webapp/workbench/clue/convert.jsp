@@ -71,7 +71,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
                 });
 				return false;
 			}
-        })
+        });
         $("#submitActivityBtn").click(function () {
 
             //取得选中数据的Id
@@ -79,6 +79,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
             var id = $xz.val();
             //取得选中数据的名字
             var name = $("#"+id).html();
+            alert(name)
             $("#activityId").val(id);
             $("#activityName").val(name);
             $("#searchActivityModal").modal("hide")
@@ -176,7 +177,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 	</div>
 	<div id="create-transaction2" style="position: relative; left: 40px; top: 20px; width: 80%; background-color: #F7F7F7; display: none;" >
 	
-		<%--<form id="tranFrom" action="/workbench/clue/convert.do" method="post">--%>
+		<%--<form id="tranFrom" action="workbench/clue/convert.do" method="post">--%>
 			<form id="tranForm" action="workbench/clue/convert.do" method="post">
             <input type="hidden" name="flag" value="a"/>
 
